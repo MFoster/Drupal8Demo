@@ -1,0 +1,14 @@
+<?php
+
+function demo_menu(){
+  
+  return array(
+    'unique_boutique' => array(
+      'title' => 'Welcome to the Show',
+      'description' => 'An introduction to the new production',
+      'route_name' => 'demo_route'
+    )
+  );
+  
+}
+

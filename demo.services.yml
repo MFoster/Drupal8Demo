@@ -1,0 +1,19 @@
+parameters:
+  demo.quotes.aristotle:
+    - "Knowing yourself is the beginning of all wisdom."
+    - "What is a friend? A single soul dwelling in two bodies."
+    - "It is the mark of an educated mind to be able to entertain a thought without accepting it."
+    - "Hope is a waking dream."
+    - "Happiness depends upon ourselves."
+    - "Wishing to be friends is quick work, but friendship is a slow ripening fruit."
+    - "Happiness is the meaning and the purpose of life, the whole aim and end of human existence."
+    - "No great mind has ever existed without a touch of madness."
+    - "Educating the mind without educating the heart is no education at all."
+
+services:
+  demo.quotecollection:
+    class: Drupal\demo\Service\QuoteCollection
+    arguments:
+      - %demo.quotes.aristotle%
+    calls:
+      - [setAuthor, ["Aristotle"]]

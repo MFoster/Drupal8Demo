@@ -1,0 +1,6 @@
+name: Titan Module Demo
+type: module
+description: 'Demonstrates the basics of module development in Drupal 8'
+package: Demo
+version: 1.x
+core: 8.x

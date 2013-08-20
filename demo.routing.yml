@@ -1,0 +1,20 @@
+demo_route:
+  pattern: 'demo/public'
+  defaults:
+    _content: "\Drupal\demo\Controller\DefaultController::demoAction"
+  requirements:
+    _permission: "view content"
+    
+demo_name:
+  pattern: 'demo/name/{name}'
+  defaults: 
+    _content: "\Drupal\demo\Controller\DefaultController::nameAction"
+  requirements:
+    _permission: "view content"
+    
+demo_quote:
+  pattern: 'demo/quote'
+  defaults:
+    _content: "\Drupal\demo\Controller\DefaultController::quoteAction"
+  requirements:
+    _permission: "view content"
