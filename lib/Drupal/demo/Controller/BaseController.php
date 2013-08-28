@@ -10,7 +10,6 @@ namespace Drupal\demo\Controller;
 use Drupal\action\Form\ActionAdminManageForm;
 use Drupal\Core\ControllerInterface;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Controller\ControllerBase
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
