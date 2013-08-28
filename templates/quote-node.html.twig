@@ -1,0 +1,8 @@
+{% extends 'modules/demo/templates/base.html.twig' %}
+{% block basic %}
+<ul>
+{% for quote in quotes %}
+  <li><h2>{{ quote.title }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
