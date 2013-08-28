@@ -1,19 +1,46 @@
 parameters:
-  demo.quotes.aristotle:
-    - "Knowing yourself is the beginning of all wisdom."
-    - "What is a friend? A single soul dwelling in two bodies."
-    - "It is the mark of an educated mind to be able to entertain a thought without accepting it."
-    - "Hope is a waking dream."
-    - "Happiness depends upon ourselves."
-    - "Wishing to be friends is quick work, but friendship is a slow ripening fruit."
-    - "Happiness is the meaning and the purpose of life, the whole aim and end of human existence."
-    - "No great mind has ever existed without a touch of madness."
-    - "Educating the mind without educating the heart is no education at all."
+    demo.quotes.aristotle:
+        - "Knowing yourself is the beginning of all wisdom."
+        - "What is a friend? A single soul dwelling in two bodies."
+        - "It is the mark of an educated mind to be able to entertain a thought without accepting it."
+        - "Hope is a waking dream."
+        - "Happiness depends upon ourselves."
+        - "Wishing to be friends is quick work, but friendship is a slow ripening fruit."
+        - "Happiness is the meaning and the purpose of life, the whole aim and end of human existence."
+        - "No great mind has ever existed without a touch of madness."
+        - "Educating the mind without educating the heart is no education at all."
 
+    demo.quotecollection.class: Drupal\demo\Service\QuoteCollection
+    demo.rss.reader.class: Drupal\demo\Service\RssReader
+    demo.repo.quote.class: Drupal\demo\Service\QuoteRepository
+    demo.greeter.class: Drupal\demo\Service\GreeterListener
+  
 services:
-  demo.quotecollection:
-    class: Drupal\demo\Service\QuoteCollection
-    arguments:
-      - %demo.quotes.aristotle%
-    calls:
-      - [setAuthor, ["Aristotle"]]
+    #Interacts with drupal database to fetch quote
+    #also serves as factory service to create database
+    #quote collection service.
+    demo.repo.quote:
+        class: %demo.repo.quote.class%
+        arguments:
+            - @database
+    #Local quote service that only has the quotes from the parameters above.
+    demo.quote.local:
+        class: %demo.quotecollection.class%
+        arguments:
+            - %demo.quotes.aristotle%
+        calls:
+            - [setAuthor, ["Aristotle"]]
+    #Database driven quote service, is fed quotes from a node list.
+    demo.quote.database:
+        class: %demo.quotecollection.class%
+        factory_service: demo.repo.quote
+        factory_method: createCollection
+        
+    #Event listeners for kernel.request, adds session message
+    #dervid from random quote that is fetched from injected quote service
+    demo.greeter:
+        class: %demo.greeter.class%
+        tags:
+            - { name: event_subscriber }
+        calls:
+            - ["setQuotes", [@demo.quote.database]]

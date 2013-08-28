@@ -15,6 +15,13 @@ demo_name:
 demo_quote:
   pattern: 'demo/quote'
   defaults:
-    _content: "\Drupal\demo\Controller\DefaultController::quoteAction"
+    _content: "\Drupal\demo\Controller\QuoteController::indexAction"
+  requirements:
+    _permission: "view content"
+    
+demo_rss:
+  pattern: 'demo/rss/index.html'
+  defaults:
+    _content: "\Drupal\demo\Controller\RssController::indexAction"
   requirements:
     _permission: "view content"
