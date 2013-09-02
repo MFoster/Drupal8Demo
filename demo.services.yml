@@ -14,33 +14,47 @@ parameters:
     demo.rss.reader.class: Drupal\demo\Service\RssReader
     demo.repo.quote.class: Drupal\demo\Service\QuoteRepository
     demo.greeter.class: Drupal\demo\Service\GreeterListener
+    demo.quote.factory.class: Drupal\demo\Service\QuoteFactory
   
 services:
-    #Interacts with drupal database to fetch quote
-    #also serves as factory service to create database
-    #quote collection service.
-    demo.repo.quote:
+    #Interacts with drupal database to fetch quotes 
+    demo.quote.repo:
         class: %demo.repo.quote.class%
         arguments:
             - @database
+    #serves as factory service to create database
+    #quote collection service.
+    demo.quote.factory:
+        class: %demo.quote.factory.class%
+        arguments:
+            - @demo.quote.repo
+        calls:
+            - [setChildClass, [%demo.quotecollection.class%]]
+    #public alias for quote collection service
+    demo.quote:
+        alias: demo.quote.database
+    #parent service for quote collection services
+    demo.quote.base:
+        class: %demo.quotecollection.class%
+        public: false
+        abstract: true
     #Local quote service that only has the quotes from the parameters above.
     demo.quote.local:
-        class: %demo.quotecollection.class%
+        parent: demo.quote.base
         arguments:
             - %demo.quotes.aristotle%
         calls:
             - [setAuthor, ["Aristotle"]]
     #Database driven quote service, is fed quotes from a node list.
     demo.quote.database:
-        class: %demo.quotecollection.class%
-        factory_service: demo.repo.quote
+        parent: demo.quote.base
+        factory_service: demo.quote.factory
         factory_method: createCollection
-        
     #Event listeners for kernel.request, adds session message
-    #dervid from random quote that is fetched from injected quote service
-    demo.greeter:
+    #derived from random quote that is fetched from injected quote service
+    demo.quote.greeter:
         class: %demo.greeter.class%
         tags:
             - { name: event_subscriber }
         calls:
-            - ["setQuotes", [@demo.quote.database]]
+            - ["setQuotes", [@demo.quote]]

@@ -24,7 +24,9 @@ class QuoteController extends BaseController {
   public function indexAction(Request $request)
   {
     
-    $repo = $this->get('demo.repo.quote');
+    $repo = $this->get('demo.quote.repo');
+    
+    $collection = $this->get('demo.quote');
     
     $quotes = $repo->getQuotes();
     

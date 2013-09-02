@@ -77,7 +77,7 @@ class DefaultController implements ControllerInterface {
   public function quoteAction()
   {
   
-    $collection = $this->container->get('demo.quotecollection');
+    $collection = $this->container->get('demo.quote.local');
     
     $twig = $this->container->get('twig');
     

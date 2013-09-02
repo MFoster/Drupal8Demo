@@ -22,6 +22,7 @@ class QuoteRepository
         $select->condition('status', 1, '=');
         $select->fields('nr', array('title'));
         $select->fields('node', array('nid'));
+        $select->groupBy('nr.nid');
         $select->limit($limit);
         $select->join('node_field_revision', 'nr');
         
@@ -29,15 +30,6 @@ class QuoteRepository
     
     }
     
-    public function createCollection($limit = 50)
-    {
-        $quotes = array();
-        
-        foreach($this->getQuotes($limit) as $quote) {
-            $quotes[] = $quote->title;
-        }
-    
-        return new QuoteCollection($quotes);
-    }
+
     
 }
